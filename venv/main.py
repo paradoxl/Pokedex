@@ -16,14 +16,15 @@ nums = os.environ.get('myNumber')
 # Pull data from pokebase
 pokemon = pb.pokemon(random.randint(1, 1000))
 print(pokemon.abilities)
-print(sid)
 values = "Name: " + str(pokemon.name) + " " + " Height: " + str(pokemon.height) + " Weight: " + str(pokemon.weight)
+
+
 # Pull Image from pokedb
-r = requests.get('https://pokemondb.net/pokedex/mew')
+r = requests.get('https://pokemondb.net/pokedex/'+str(pokemon.name))
 soup = BeautifulSoup(r.content, 'html.parser')
 images = soup.findAll('img')
 for item in images:
-    sending = item['src']
+    img = item['src']
 
 # Send data to phone
 client = Client(sid, auth)
@@ -32,11 +33,11 @@ message = client.messages.create(
     from_= "19789042343",
     body= values
 )
-
+# Send pokemon image to phone
 message2 = client.messages.create(
     to=nums,
     from_= "19789042343",
-    body= sending
+    body= img
 
 )
 
